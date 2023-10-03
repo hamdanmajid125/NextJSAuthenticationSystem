@@ -38,6 +38,11 @@ export const authOptions = {
           }
         })
       ],
+      session:{
+        strategy: "jwt"
+      },
+      secret: process.env.NEXTAUTH_SECRET,
+      debug: process.env.NODE_ENV == "development",
       callbacks:{
         async signIn({ user, account, profile, email, credentials }) {
           if(user?.error === 'my custom error') {
