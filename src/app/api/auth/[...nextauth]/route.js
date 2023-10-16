@@ -34,19 +34,7 @@ export const authOptions = {
 
                 
             }
-            const exist = await prisma.user.findUnique({
-              where:{
-                  email: email
-              }
-          });
-          if(!exist){
-              return null;
-          }
-          const passwordMatch = await bcrypt.compare(password, exist.hashedPassword)
-          if (!passwordMatch) {
-            return null
-          }
-          return exist;
+            
           }
         })
       ],
@@ -56,31 +44,11 @@ export const authOptions = {
       secret: process.env.NEXTAUTH_SECRET,
       debug: process.env.NODE_ENV == "development",
       callbacks:{
-        async jwt({token, user, session})
-        {
-          console.log('token',{token, user, session})
-          return token
-        },
-        async session({token, user, session})
-        {
-          console.log('session',{token, user, session})
-          return session
-
-        },
-        async redirect({url, baseUrl}) {
-          console.log('url', url);
-          console.log('baseUrl', baseUrl);
-          
-          return url.startsWith(baseUrl) ? url : baseUrl + '/dashboard';
-        },
         async signIn({ user, account, profile, email, credentials }) {
-          const isAllowedToSignIn = true
-          if (isAllowedToSignIn) {
-            return true
-          } else{
-            return false
+          if(user?.error === 'my custom error') {
+             throw new Error('custom error to the client')
           }
-        }
+       }
       }
 
 }

@@ -24,7 +24,7 @@ export default function RegisterPage(){
           if (response.ok) {
             const userData = await response.json();
             console.log(userData);
-            router.push('/api/auth/signin');
+            router.push('/login');
           } else {
             console.error('Failed to register user:', response.status);
           }
